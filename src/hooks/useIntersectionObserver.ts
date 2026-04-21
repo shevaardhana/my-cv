@@ -6,7 +6,7 @@ import { type RefObject, useEffect, useState } from 'react';
  * Requirements: 8.1
  */
 function useIntersectionObserver(
-  ref: RefObject<HTMLElement | null>,
+  ref: RefObject<Element | HTMLElement | null>,
   options?: IntersectionObserverInit
 ): boolean {
   const [isVisible, setIsVisible] = useState(false);
