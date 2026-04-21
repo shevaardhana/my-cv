@@ -156,4 +156,5 @@ export const contactInfo: ContactInfo = {
   github: 'https://github.com/shevaardhana',
   linkedin: 'https://linkedin.com/in/sheva-ardhana',
   instagram: 'https://instagram.com/ardhanasheva2',
+  cvUrl: '/assets/cv.pdf',
 };

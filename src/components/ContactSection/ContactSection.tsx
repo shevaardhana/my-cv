@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiMail, FiPhone, FiMapPin, FiGithub, FiLinkedin, FiInstagram, FiSend } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiGithub, FiLinkedin, FiInstagram, FiSend, FiDownload } from 'react-icons/fi';
 import type { ContactInfo, ContactFormData } from '../../types/index';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useReducedMotion from '../../hooks/useReducedMotion';
@@ -117,6 +117,20 @@ function ContactSection({ contactInfo }: ContactSectionProps) {
               ))}
             </div>
           </motion.div>
+
+          {/* Download CV */}
+          {contactInfo.cvUrl && (
+            <motion.div variants={variants(fadeInUp)}>
+              <a
+                href={contactInfo.cvUrl}
+                download
+                className="flex items-center justify-center gap-2 w-full rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-6 py-4 text-cyan-400 font-semibold hover:bg-cyan-500/20 hover:border-cyan-400 transition-colors"
+              >
+                <FiDownload className="text-xl" aria-hidden="true" />
+                Download CV
+              </a>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* Contact Form */}

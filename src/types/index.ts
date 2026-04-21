@@ -43,6 +43,7 @@ export interface ContactInfo {
   github: string;
   linkedin: string;
   instagram: string;
+  cvUrl?: string;
 }
 
 export interface ContactFormData {
