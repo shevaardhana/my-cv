@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState } from 'react';
+import { type RefObject, useEffect, useState } from 'react';
 
 /**
  * Wrapper Intersection Observer untuk trigger animasi.
@@ -6,7 +6,7 @@ import { RefObject, useEffect, useState } from 'react';
  * Requirements: 8.1
  */
 function useIntersectionObserver(
-  ref: RefObject<Element>,
+  ref: RefObject<HTMLElement | null>,
   options?: IntersectionObserverInit
 ): boolean {
   const [isVisible, setIsVisible] = useState(false);

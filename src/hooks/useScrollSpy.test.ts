@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import * as fc from 'fast-check';
 import useScrollSpy from './useScrollSpy';
 
 // Helper: create a mock DOM element with a specific offsetTop

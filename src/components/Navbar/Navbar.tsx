@@ -66,7 +66,7 @@ function Navbar({ activeSection: activeSectionProp, sections = SECTION_IDS }: Na
       height: 'auto',
       transition: prefersReducedMotion
         ? { duration: 0 }
-        : { duration: 0.3, ease: 'easeOut' },
+        : { duration: 0.3, ease: 'easeOut' as const },
     },
     exit: {
       opacity: 0,
@@ -74,7 +74,7 @@ function Navbar({ activeSection: activeSectionProp, sections = SECTION_IDS }: Na
       height: 0,
       transition: prefersReducedMotion
         ? { duration: 0 }
-        : { duration: 0.2, ease: 'easeIn' },
+        : { duration: 0.2, ease: 'easeIn' as const },
     },
   };
 

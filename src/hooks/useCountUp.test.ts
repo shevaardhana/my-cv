@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import * as fc from 'fast-check';
 import useCountUp from './useCountUp';
 
 describe('useCountUp', () => {
