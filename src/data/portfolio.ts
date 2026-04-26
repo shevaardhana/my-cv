@@ -87,7 +87,7 @@ export const experienceData: Experience[] = [
   {
     company: 'Freelance',
     position: 'Fullstack Developer',
-    period: 'Augt 2022 - Des 2023',
+    period: 'Augt 2022 - Des 2022',
     description: [
       'Membangun company profile dan landing page untuk UMKM',
       'Membuat website top up voucher game',
