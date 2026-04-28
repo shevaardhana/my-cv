@@ -52,3 +52,8 @@ export interface ContactFormData {
   subject: string;
   message: string;
 }
+
+export interface Achievement {
+  title: string;
+  impacts: string[];
+}

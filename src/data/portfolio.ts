@@ -5,6 +5,7 @@ import type {
   Experience,
   Project,
   ContactInfo,
+  Achievement,
 } from '../types/index';
 
 export const heroData: HeroData = {
@@ -146,6 +147,49 @@ export const projectsData: Project[] = [
     technologies: ['ReactJS', 'Vite', 'Tailwind'],
     repoUrl: 'https://github.com/shevaardhana/todo_list_react',
     category: 'Frontend',
+  },
+];
+
+export const achievementsData: Achievement[] = [
+  {
+    title: 'Web-Based Attendance System',
+    impacts: [
+      'Menghilangkan antrean absensi',
+      'Meningkatkan efisiensi operasional',
+      'Mengurangi keterlambatan karyawan',
+    ],
+  },
+  {
+    title: 'Business Trip Reporting System',
+    impacts: [
+      'Mempermudah input & pelaporan',
+      'Meningkatkan akurasi data',
+      'Mempercepat administrasi',
+    ],
+  },
+  {
+    title: 'Site Master Monitoring System',
+    impacts: [
+      'Monitoring data site terpusat',
+      'Insight hasil survey lapangan',
+      'Mendukung keputusan manajemen',
+    ],
+  },
+  {
+    title: 'IT Trouble Ticket System',
+    impacts: [
+      'Sistem request perbaikan terpusat',
+      'Menghilangkan ketergantungan manual ke tim IT',
+      'Meningkatkan kecepatan respon issue',
+    ],
+  },
+  {
+    title: 'BAK (Berita Acara Kesepakatan) System',
+    impacts: [
+      'Mempermudah pembuatan dokumen BAK oleh tim commercial',
+      'Monitoring masa berlaku kontrak secara terpusat',
+      'Membantu antisipasi kontrak yang akan habis',
+    ],
   },
 ];
 

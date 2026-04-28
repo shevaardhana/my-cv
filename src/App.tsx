@@ -4,6 +4,7 @@ import HeroSection from './components/HeroSection/HeroSection';
 import AboutSection from './components/AboutSection/AboutSection';
 import SkillsSection from './components/SkillsSection/SkillsSection';
 import ExperienceSection from './components/ExperienceSection/ExperienceSection';
+import AchievementsSection from './components/AchievementsSection';
 import ProjectsSection from './components/ProjectsSection/ProjectsSection';
 import ContactSection from './components/ContactSection/ContactSection';
 import Footer from './components/Footer/Footer';
@@ -14,9 +15,10 @@ import {
   experienceData,
   projectsData,
   contactInfo,
+  achievementsData,
 } from './data/portfolio';
 
-const SECTION_IDS = ['hero', 'about', 'skills', 'experience', 'projects', 'contact'];
+const SECTION_IDS = ['hero', 'about', 'skills', 'experience', 'achievements', 'projects', 'contact'];
 
 function App() {
   const activeSection = useScrollSpy(SECTION_IDS, 80);
@@ -36,6 +38,8 @@ function App() {
         <SkillsSection skills={skillsData} />
 
         <ExperienceSection experiences={experienceData} />
+
+        <AchievementsSection achievements={achievementsData} />
 
         <ProjectsSection projects={projectsData} />
 
