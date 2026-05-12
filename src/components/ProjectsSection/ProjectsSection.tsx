@@ -1,32 +1,25 @@
 import { useRef, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Project } from '../../types/index';
 import { projectsData } from '../../data/portfolio';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useReducedMotion from '../../hooks/useReducedMotion';
 import { staggerContainer, fadeInUp } from '../../utils/animationVariants';
 import ProjectCard from '../ui/ProjectCard';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-interface ProjectsProps {
-  projects?: Project[];
-}
 
-const ALL_LABEL = 'Semua';
-
-/**
- * Responsive project grid with category filter and staggered scroll-triggered animation.
- * Requirements: 6.1, 6.4, 6.5, 6.6
- */
-function ProjectsSection({ projects = projectsData }: ProjectsProps) {
+function ProjectsSection() {
+  const { language, t } = useLanguage();
+  const projects = projectsData[language];
+  const ALL_LABEL = t('projects.all');
   const sectionRef = useRef<HTMLElement>(null);
   const isVisible = useIntersectionObserver(sectionRef as React.RefObject<Element>, { threshold: 0.05 });
   const reducedMotion = useReducedMotion();
 
-  // Derive unique categories — Req 6.5
   const categories = useMemo(() => {
     const unique = Array.from(new Set(projects.map((p) => p.category)));
     return [ALL_LABEL, ...unique];
-  }, [projects]);
+  }, [projects, ALL_LABEL]);
 
   const [activeCategory, setActiveCategory] = useState<string>(ALL_LABEL);
 
@@ -54,18 +47,18 @@ function ProjectsSection({ projects = projectsData }: ProjectsProps) {
         variants={headingVariants}
         className="mb-10 text-center"
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-white">Proyek</h2>
-        <p className="mt-3 text-gray-400">Beberapa proyek yang telah saya kerjakan</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">{t('projects.title')}</h2>
+        <p className="mt-3 text-gray-600">{t('projects.subtitle')}</p>
       </motion.div>
 
-      {/* Category filter — Req 6.5, 6.6 */}
+      {/* Category filter */}
       <motion.div
         initial="hidden"
         animate={isVisible ? 'visible' : 'hidden'}
         variants={headingVariants}
         className="mb-8 flex flex-wrap justify-center gap-2"
         role="group"
-        aria-label="Filter kategori proyek"
+        aria-label="Filter project categories"
       >
         {categories.map((cat) => (
           <button
@@ -75,8 +68,8 @@ function ProjectsSection({ projects = projectsData }: ProjectsProps) {
             className={`rounded-full px-4 py-1.5 text-sm font-medium border transition-colors duration-200
               ${
                 activeCategory === cat
-                  ? 'bg-cyan-400/20 border-cyan-400 text-cyan-400'
-                  : 'bg-white/5 border-white/10 text-gray-400 hover:border-cyan-400/40 hover:text-cyan-300'
+                  ? 'bg-orange-500 border-orange-500 text-white'
+                  : 'bg-white border-gray-300 text-gray-600 hover:border-orange-400 hover:text-orange-500'
               }`}
           >
             {cat}
@@ -84,7 +77,7 @@ function ProjectsSection({ projects = projectsData }: ProjectsProps) {
         ))}
       </motion.div>
 
-      {/* Project grid — Req 6.1, 6.4, 6.6 */}
+      {/* Project grid */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activeCategory}

@@ -15,6 +15,7 @@ import SkillBar from '../ui/SkillBar';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useReducedMotion from '../../hooks/useReducedMotion';
 import { staggerContainer, fadeInUp } from '../../utils/animationVariants';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface SkillsProps {
   skills: Skill[];
@@ -28,9 +29,10 @@ const iconMap: Record<string, IconType> = {
   ExpressJS: SiExpress,
   NodeJS: SiNodedotjs,
   MySQL: SiMysql,
+  SQL: SiMysql,
 };
 
-const categoryOrder: Skill['category'][] = ['Frontend', 'Backend', 'Database'];
+const categoryOrder: Skill['category'][] = ['Frontend', 'Backend', 'Database', 'Tools'];
 
 function SkillCard({
   skill,
@@ -47,14 +49,20 @@ function SkillCard({
     ? { hidden: {}, visible: {} }
     : fadeInUp;
 
+  const isEmoji = skill.iconUrl.length <= 2 && !/^https?:\/\//.test(skill.iconUrl);
+
   return (
     <motion.div
       variants={variants}
-      className="flex flex-col gap-2 rounded-xl bg-white/5 p-4 backdrop-blur-sm border border-white/10 hover:border-cyan-400/30 transition-colors"
+      className="flex flex-col gap-2 rounded-xl bg-white border border-gray-200 p-4 hover:border-orange-300 transition-colors shadow-md hover:shadow-lg"
     >
       <div className="flex items-center gap-3">
         {Icon ? (
-          <Icon className="text-2xl text-cyan-400 shrink-0" aria-hidden="true" />
+          <Icon className="text-2xl text-orange-500 shrink-0" aria-hidden="true" />
+        ) : isEmoji ? (
+          <span className="text-2xl shrink-0" role="img" aria-label={skill.name}>
+            {skill.iconUrl}
+          </span>
         ) : (
           <img
             src={skill.iconUrl}
@@ -63,7 +71,7 @@ function SkillCard({
             loading="lazy"
           />
         )}
-        <span className="text-sm font-semibold text-white">{skill.name}</span>
+        <span className="text-sm font-semibold text-gray-900">{skill.name}</span>
       </div>
       <SkillBar
         name={skill.name}
@@ -75,6 +83,7 @@ function SkillCard({
 }
 
 function SkillsSection({ skills }: SkillsProps) {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1 });
   const reducedMotion = useReducedMotion();
@@ -84,7 +93,7 @@ function SkillsSection({ skills }: SkillsProps) {
       acc[cat] = skills.filter((s) => s.category === cat);
       return acc;
     },
-    { Frontend: [], Backend: [], Database: [] }
+    { Frontend: [], Backend: [], Database: [], Tools: [] }
   );
 
   const containerVariants = reducedMotion
@@ -95,8 +104,9 @@ function SkillsSection({ skills }: SkillsProps) {
     <section
       id="skills"
       ref={sectionRef}
-      className="py-20 px-4 md:px-8 max-w-6xl mx-auto"
+      className="py-20 bg-white"
     >
+      <div className="px-4 md:px-8 max-w-6xl mx-auto">
       {/* Section heading */}
       <motion.div
         initial="hidden"
@@ -104,10 +114,10 @@ function SkillsSection({ skills }: SkillsProps) {
         variants={reducedMotion ? { hidden: {}, visible: {} } : fadeInUp}
         className="mb-12 text-center"
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-white">
-          Skills &amp; Teknologi
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          {t('skills.title')}
         </h2>
-        <p className="mt-3 text-gray-400">Teknologi yang saya kuasai</p>
+        <p className="mt-3 text-gray-600">{t('skills.subtitle')}</p>
       </motion.div>
 
       {/* Categories */}
@@ -118,7 +128,7 @@ function SkillsSection({ skills }: SkillsProps) {
 
           return (
             <div key={category}>
-              <h3 className="mb-6 text-lg font-semibold text-cyan-400 uppercase tracking-widest">
+              <h3 className="mb-6 text-lg font-semibold text-orange-500 uppercase tracking-widest">
                 {category}
               </h3>
               <motion.div
@@ -139,6 +149,7 @@ function SkillsSection({ skills }: SkillsProps) {
             </div>
           );
         })}
+      </div>
       </div>
     </section>
   );

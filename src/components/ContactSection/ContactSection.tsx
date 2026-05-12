@@ -1,19 +1,18 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiMail, FiPhone, FiMapPin, FiGithub, FiLinkedin, FiInstagram, FiSend, FiDownload } from 'react-icons/fi';
-import type { ContactInfo, ContactFormData } from '../../types/index';
+import type { ContactFormData } from '../../types/index';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useReducedMotion from '../../hooks/useReducedMotion';
 import { fadeInUp, staggerContainer } from '../../utils/animationVariants';
 import { validateContactForm } from '../../utils/validators';
-
-interface ContactSectionProps {
-  contactInfo: ContactInfo;
-}
+import { useLanguage } from '../../contexts/LanguageContext';
+import { contactInfo } from '../../data/portfolio';
 
 const emptyForm: ContactFormData = { name: '', email: '', subject: '', message: '' };
 
-function ContactSection({ contactInfo }: ContactSectionProps) {
+function ContactSection() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const isVisible = useIntersectionObserver(sectionRef as React.RefObject<Element>, { threshold: 0.1 });
   const reducedMotion = useReducedMotion();
@@ -27,7 +26,6 @@ function ContactSection({ contactInfo }: ContactSectionProps) {
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    // Clear error on change
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: null }));
   }
 
@@ -67,8 +65,8 @@ function ContactSection({ contactInfo }: ContactSectionProps) {
         variants={variants(fadeInUp)}
         className="mb-12 text-center"
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-white">Hubungi Saya</h2>
-        <p className="mt-3 text-gray-400">Ada pertanyaan atau ingin bekerja sama? Kirim pesan!</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">{t('contact.title')}</h2>
+        <p className="mt-3 text-gray-600">{t('contact.subtitle')}</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -80,14 +78,14 @@ function ContactSection({ contactInfo }: ContactSectionProps) {
           className="flex flex-col gap-6"
         >
           {/* Direct contact */}
-          <motion.div variants={variants(fadeInUp)} className="rounded-xl bg-white/5 border border-white/10 p-6 backdrop-blur-sm">
-            <h3 className="text-lg font-semibold text-cyan-400 mb-4">Info Kontak</h3>
+          <motion.div variants={variants(fadeInUp)} className="rounded-xl bg-white border border-gray-200 p-6 shadow-md">
+            <h3 className="text-lg font-semibold text-orange-500 mb-4">{t('contact.info')}</h3>
             <ul className="flex flex-col gap-4">
               {directContacts.map(({ label, Icon, href }) => (
-                <li key={label} className="flex items-center gap-3 text-gray-300">
-                  <Icon className="text-cyan-400 shrink-0 text-xl" aria-hidden="true" />
+                <li key={label} className="flex items-center gap-3 text-gray-700">
+                  <Icon className="text-orange-500 shrink-0 text-xl" aria-hidden="true" />
                   {href ? (
-                    <a href={href} className="hover:text-cyan-400 transition-colors break-all">
+                    <a href={href} className="hover:text-orange-500 transition-colors break-all">
                       {label}
                     </a>
                   ) : (
@@ -99,8 +97,8 @@ function ContactSection({ contactInfo }: ContactSectionProps) {
           </motion.div>
 
           {/* Social media */}
-          <motion.div variants={variants(fadeInUp)} className="rounded-xl bg-white/5 border border-white/10 p-6 backdrop-blur-sm">
-            <h3 className="text-lg font-semibold text-cyan-400 mb-4">Media Sosial</h3>
+          <motion.div variants={variants(fadeInUp)} className="rounded-xl bg-white border border-gray-200 p-6 shadow-md">
+            <h3 className="text-lg font-semibold text-orange-500 mb-4">{t('contact.social')}</h3>
             <div className="flex flex-wrap gap-3">
               {socialLinks.map(({ label, href, Icon }) => (
                 <a
@@ -109,7 +107,7 @@ function ContactSection({ contactInfo }: ContactSectionProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-gray-300 hover:bg-cyan-400/20 hover:text-cyan-400 transition-colors"
+                  className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
                 >
                   <Icon className="text-xl" aria-hidden="true" />
                   <span className="text-sm">{label}</span>
@@ -124,10 +122,10 @@ function ContactSection({ contactInfo }: ContactSectionProps) {
               <a
                 href={contactInfo.cvUrl}
                 download
-                className="flex items-center justify-center gap-2 w-full rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-6 py-4 text-cyan-400 font-semibold hover:bg-cyan-500/20 hover:border-cyan-400 transition-colors"
+                className="flex items-center justify-center gap-2 w-full rounded-xl bg-orange-50 border border-orange-200 px-6 py-4 text-orange-500 font-semibold hover:bg-orange-100 hover:border-orange-400 transition-colors"
               >
                 <FiDownload className="text-xl" aria-hidden="true" />
-                Download CV
+                {t('contact.downloadCV')}
               </a>
             </motion.div>
           )}
@@ -138,100 +136,92 @@ function ContactSection({ contactInfo }: ContactSectionProps) {
           initial="hidden"
           animate={isVisible ? 'visible' : 'hidden'}
           variants={variants(fadeInUp)}
-          className="rounded-xl bg-white/5 border border-white/10 p-6 backdrop-blur-sm"
+          className="rounded-xl bg-white border border-gray-200 p-6 shadow-md"
         >
           {submitted ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center py-10">
-              <FiSend className="text-5xl text-cyan-400" aria-hidden="true" />
-              <p className="text-white text-lg font-semibold">Pesan terkirim!</p>
-              <p className="text-gray-400 text-sm">Terima kasih, saya akan segera menghubungi Anda.</p>
+              <FiSend className="text-5xl text-orange-500" aria-hidden="true" />
+              <p className="text-gray-900 text-lg font-semibold">{t('contact.sent')}</p>
+              <p className="text-gray-600 text-sm">{t('contact.sentDesc')}</p>
               <button
                 onClick={() => setSubmitted(false)}
-                className="mt-2 text-sm text-cyan-400 hover:underline"
+                className="mt-2 text-sm text-orange-500 hover:underline"
               >
-                Kirim pesan lain
+                {t('contact.sendAnother')}
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
               {/* Name */}
               <div className="flex flex-col gap-1">
-                <label htmlFor="name" className="text-sm text-gray-300">Nama</label>
+                <label htmlFor="name" className="text-sm text-gray-700">{t('contact.form.name')}</label>
                 <input
                   id="name"
                   name="name"
                   type="text"
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="Nama lengkap"
-                  className={`rounded-lg bg-white/10 border px-4 py-2.5 text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-cyan-400 transition ${errors.name ? 'border-red-500' : 'border-white/10'}`}
+                  placeholder={t('contact.placeholder.name')}
+                  className={`rounded-lg bg-gray-50 border px-4 py-2.5 text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-400 transition ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                   aria-describedby={errors.name ? 'name-error' : undefined}
                 />
-                {errors.name && (
-                  <p id="name-error" className="text-xs text-red-400">{errors.name}</p>
-                )}
+                {errors.name && <p id="name-error" className="text-xs text-red-500">{errors.name}</p>}
               </div>
 
               {/* Email */}
               <div className="flex flex-col gap-1">
-                <label htmlFor="email" className="text-sm text-gray-300">Email</label>
+                <label htmlFor="email" className="text-sm text-gray-700">{t('contact.form.email')}</label>
                 <input
                   id="email"
                   name="email"
                   type="email"
                   value={form.email}
                   onChange={handleChange}
-                  placeholder="email@contoh.com"
-                  className={`rounded-lg bg-white/10 border px-4 py-2.5 text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-cyan-400 transition ${errors.email ? 'border-red-500' : 'border-white/10'}`}
+                  placeholder={t('contact.placeholder.email')}
+                  className={`rounded-lg bg-gray-50 border px-4 py-2.5 text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-400 transition ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                   aria-describedby={errors.email ? 'email-error' : undefined}
                 />
-                {errors.email && (
-                  <p id="email-error" className="text-xs text-red-400">{errors.email}</p>
-                )}
+                {errors.email && <p id="email-error" className="text-xs text-red-500">{errors.email}</p>}
               </div>
 
               {/* Subject */}
               <div className="flex flex-col gap-1">
-                <label htmlFor="subject" className="text-sm text-gray-300">Subjek</label>
+                <label htmlFor="subject" className="text-sm text-gray-700">{t('contact.form.subject')}</label>
                 <input
                   id="subject"
                   name="subject"
                   type="text"
                   value={form.subject}
                   onChange={handleChange}
-                  placeholder="Subjek pesan"
-                  className={`rounded-lg bg-white/10 border px-4 py-2.5 text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-cyan-400 transition ${errors.subject ? 'border-red-500' : 'border-white/10'}`}
+                  placeholder={t('contact.placeholder.subject')}
+                  className={`rounded-lg bg-gray-50 border px-4 py-2.5 text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-400 transition ${errors.subject ? 'border-red-500' : 'border-gray-300'}`}
                   aria-describedby={errors.subject ? 'subject-error' : undefined}
                 />
-                {errors.subject && (
-                  <p id="subject-error" className="text-xs text-red-400">{errors.subject}</p>
-                )}
+                {errors.subject && <p id="subject-error" className="text-xs text-red-500">{errors.subject}</p>}
               </div>
 
               {/* Message */}
               <div className="flex flex-col gap-1">
-                <label htmlFor="message" className="text-sm text-gray-300">Pesan</label>
+                <label htmlFor="message" className="text-sm text-gray-700">{t('contact.form.message')}</label>
                 <textarea
                   id="message"
                   name="message"
                   rows={4}
                   value={form.message}
                   onChange={handleChange}
-                  placeholder="Tulis pesan Anda..."
-                  className={`rounded-lg bg-white/10 border px-4 py-2.5 text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-cyan-400 transition resize-none ${errors.message ? 'border-red-500' : 'border-white/10'}`}
+                  placeholder={t('contact.placeholder.message')}
+                  className={`rounded-lg bg-gray-50 border px-4 py-2.5 text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-400 transition resize-none ${errors.message ? 'border-red-500' : 'border-gray-300'}`}
                   aria-describedby={errors.message ? 'message-error' : undefined}
                 />
-                {errors.message && (
-                  <p id="message-error" className="text-xs text-red-400">{errors.message}</p>
-                )}
+                {errors.message && <p id="message-error" className="text-xs text-red-500">{errors.message}</p>}
               </div>
 
               <button
                 type="submit"
-                className="flex items-center justify-center gap-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-white font-semibold py-3 transition-colors"
+                className="flex items-center justify-center gap-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 transition-colors shadow-md"
               >
                 <FiSend aria-hidden="true" />
-                Kirim Pesan
+                {t('contact.form.send')}
               </button>
             </form>
           )}

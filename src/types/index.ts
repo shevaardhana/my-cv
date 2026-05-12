@@ -15,7 +15,7 @@ export interface AboutData {
 export interface Skill {
   name: string;
   percentage: number;
-  category: 'Frontend' | 'Backend' | 'Database';
+  category: 'Frontend' | 'Backend' | 'Database' | 'Tools';
   iconUrl: string;
 }
 

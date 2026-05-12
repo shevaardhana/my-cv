@@ -11,9 +11,9 @@ const config: Config = {
     extend: {
       colors: {
         accent: {
-          DEFAULT: '#06b6d4', // cyan-500
-          light: '#22d3ee',   // cyan-400
-          dark: '#0891b2',    // cyan-600
+          DEFAULT: '#f97316', // orange-500
+          light: '#fb923c',   // orange-400
+          dark: '#ea580c',    // orange-600
         },
       },
       fontFamily: {

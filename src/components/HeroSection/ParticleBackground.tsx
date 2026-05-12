@@ -11,7 +11,7 @@ interface Particle {
 }
 
 const PARTICLE_COUNT = 60;
-const PARTICLE_COLOR = '6, 182, 212'; // cyan-500 RGB
+const PARTICLE_COLOR = '249, 115, 22'; // orange-500 RGB
 
 function createParticle(width: number, height: number): Particle {
   return {

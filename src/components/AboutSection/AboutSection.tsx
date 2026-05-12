@@ -4,9 +4,8 @@ import { fadeInLeft, fadeInRight } from '../../utils/animationVariants';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useCountUp from '../../hooks/useCountUp';
 import useReducedMotion from '../../hooks/useReducedMotion';
-import type { AboutData } from '../../types/index';
-
-type AboutProps = AboutData;
+import { useLanguage } from '../../contexts/LanguageContext';
+import { aboutData } from '../../data/portfolio';
 
 /** Sub-component: renders a single stat with count-up effect (Req 3.3, 3.5) */
 function StatItem({
@@ -23,11 +22,11 @@ function StatItem({
   const count = useCountUp(value, 2000, trigger);
   return (
     <div className="flex flex-col items-center">
-      <span className="text-2xl sm:text-4xl font-bold text-accent">
+      <span className="text-2xl sm:text-4xl font-bold text-orange-500">
         {count}
         {suffix}
       </span>
-      <span className="text-sm text-gray-400 mt-1 text-center">{label}</span>
+      <span className="text-sm text-gray-600 mt-1 text-center">{label}</span>
     </div>
   );
 }
@@ -36,14 +35,14 @@ function StatItem({
 function FallbackAvatar() {
   return (
     <div
-      className="w-full h-full flex items-center justify-center bg-gray-800 rounded-2xl"
+      className="w-full h-full flex items-center justify-center bg-gray-200 rounded-2xl"
       aria-label="Profile avatar"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="currentColor"
-        className="w-24 h-24 text-gray-500"
+        className="w-24 h-24 text-gray-400"
         aria-hidden="true"
       >
         <path
@@ -56,7 +55,9 @@ function FallbackAvatar() {
   );
 }
 
-function AboutSection({ description, stats, imageUrl }: AboutProps) {
+function AboutSection() {
+  const { language, t } = useLanguage();
+  const currentAboutData = aboutData[language];
   const sectionRef = useRef<HTMLElement>(null);
   const [imgError, setImgError] = useState(false);
   const prefersReducedMotion = useReducedMotion();
@@ -76,12 +77,12 @@ function AboutSection({ description, stats, imageUrl }: AboutProps) {
     <section
       id="about"
       ref={sectionRef}
-      className="py-20 bg-gray-950"
+      className="py-20 bg-white"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section heading */}
-        <h2 className="text-3xl sm:text-4xl font-bold text-white text-center mb-16">
-          Tentang <span className="text-accent">Saya</span>
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-16">
+          {t('about.title')} <span className="text-orange-500">{t('about.me')}</span>
         </h2>
 
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
@@ -92,16 +93,16 @@ function AboutSection({ description, stats, imageUrl }: AboutProps) {
             initial="hidden"
             animate={isVisible ? 'visible' : 'hidden'}
           >
-            {/* Glassmorphism card */}
-            <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-8 will-change-transform">
+            {/* Card with light theme */}
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 sm:p-8 will-change-transform shadow-lg">
               {/* Description — Req 3.2 */}
-              <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-10">
-                {description}
+              <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-10">
+                {currentAboutData.description}
               </p>
 
               {/* Stats — Req 3.3, 3.5 */}
-              <div className="grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
-                {stats.map((stat) => (
+              <div className="grid grid-cols-3 gap-4 border-t border-gray-200 pt-8">
+                {currentAboutData.stats.map((stat) => (
                   <StatItem
                     key={stat.label}
                     label={stat.label}
@@ -121,12 +122,12 @@ function AboutSection({ description, stats, imageUrl }: AboutProps) {
             initial="hidden"
             animate={isVisible ? 'visible' : 'hidden'}
           >
-            <div className="w-full h-full rounded-2xl overflow-hidden border-2 border-accent/30 shadow-lg shadow-accent/10 will-change-transform">
+            <div className="w-full h-full rounded-2xl overflow-hidden border-2 border-orange-200 shadow-lg shadow-orange-100 will-change-transform">
               {imgError ? (
                 <FallbackAvatar />
               ) : (
                 <img
-                  src={imageUrl}
+                  src={currentAboutData.imageUrl}
                   alt="Profile photo"
                   loading="lazy"
                   className="w-full h-full object-cover"

@@ -19,13 +19,13 @@ function SkillBar({ name, percentage, triggered }: SkillBarProps) {
     <div className="w-full">
       {/* Label */}
       <div className="flex justify-between items-center mb-1">
-        <span className="text-sm font-medium text-gray-300">{name}</span>
-        <span className="text-sm text-gray-400">{percentage}%</span>
+        <span className="text-sm font-medium text-gray-700">{name}</span>
+        <span className="text-sm text-gray-500">{percentage}%</span>
       </div>
 
       {/* Track */}
       <div
-        className="relative h-2 w-full rounded-full bg-white/10 overflow-visible"
+        className="relative h-2 w-full rounded-full bg-gray-200 overflow-visible"
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
         role="progressbar"
@@ -36,7 +36,7 @@ function SkillBar({ name, percentage, triggered }: SkillBarProps) {
       >
         {/* Fill */}
         <motion.div
-          className="h-full rounded-full bg-cyan-400"
+          className="h-full rounded-full bg-orange-400"
           initial={{ width: '0%' }}
           animate={{ width: triggered ? `${percentage}%` : '0%' }}
           transition={{ duration: 1, ease: 'easeOut' }}
